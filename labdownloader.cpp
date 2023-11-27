@@ -29,7 +29,7 @@ void LabDownloader::onGetJsonFinished()
     QString fileName = reply->url().fileName();
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
-        // todo: show tips
+        emit error("Download json failed");
         return;
     }
 
@@ -37,13 +37,14 @@ void LabDownloader::onGetJsonFinished()
     QFile file(fileName);
 
     if (!file.open(QIODevice::ReadWrite)) {
-        // todo: show tips
+        emit error("Can't save json");
         return;
     }
 
     file.write(bytes);
     file.flush();
     file.close();
+    emit downloadFinished();
 }
 
 void LabDownloader::getJsonUrlFinished()
@@ -53,13 +54,13 @@ void LabDownloader::getJsonUrlFinished()
     QNetworkReply *reply = qobject_cast<QNetworkReply *>(sender());
     reply->deleteLater();
     if (reply->error() != QNetworkReply::NoError) {
-        // todo: show tips
+        emit error(QString("Can't open json page: ") + reply->url().url());
         return;
     }
 
     QRegularExpressionMatch match = JsonReg.match(reply->readAll());
     if (match.lastCapturedIndex() != 1) {
-        // todo: show tips
+        emit error("Can't find json url!");
         return;
     }
 
@@ -102,7 +103,7 @@ void LabDownloader::parseLabPageUrl(LabType type, QByteArray homePage)
     QRegularExpressionMatch match = exp.match(QString(homePage));
 
     if (match.lastCapturedIndex() != 1) {
-        // todo: show tips
+        emit error("Can't find lab url!");
         qWarning() << "Website format changed";
         return;
     }

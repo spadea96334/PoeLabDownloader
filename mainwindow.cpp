@@ -1,12 +1,16 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QMessageBox>
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     setWindowFlag(Qt::MSWindowsFixedSizeDialogHint);
+    connect(&downloader, &LabDownloader::downloadFinished, this, &MainWindow::onDownloadFinished);
+    connect(&downloader, &LabDownloader::error, this, &MainWindow::showMessage);
 }
 
 MainWindow::~MainWindow()
@@ -30,4 +34,17 @@ void MainWindow::onButtonClicked()
 
     LabDownloader::LabType type = static_cast<LabDownloader::LabType>(index);
     downloader.downloadFile(type);
+}
+
+void MainWindow::onDownloadFinished()
+{
+    showMessage("Download finished!!");
+}
+
+void MainWindow::showMessage(QString message)
+{
+    QMessageBox *messageBox = new QMessageBox();
+    messageBox->setText(message);
+    messageBox->exec();
+    messageBox->deleteLater();
 }

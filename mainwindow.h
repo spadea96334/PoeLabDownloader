@@ -17,8 +17,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+public slots:
+    void showMessage(QString message);
+
 private slots:
     void onButtonClicked();
+    void onDownloadFinished();
 
 private:
     Ui::MainWindow *ui;

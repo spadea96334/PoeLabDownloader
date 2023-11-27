@@ -19,6 +19,8 @@ public:
     void downloadFile(LabType type);
 
 signals:
+    void downloadFinished();
+    void error(QString message);
 
 private slots:
     void onGetJsonFinished();
