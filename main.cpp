@@ -10,8 +10,5 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
-    LabDownloader *loader = new LabDownloader();
-    loader->downloadFile(LabDownloader::UBER);
-
     return a.exec();
 }
