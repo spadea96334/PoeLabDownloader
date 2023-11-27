@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "labdownloader.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -15,8 +17,12 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void onButtonClicked();
+
 private:
     Ui::MainWindow *ui;
+    LabDownloader downloader;
 };
 
 #endif // MAINWINDOW_H
